@@ -1,14 +1,6 @@
 class Dashing.SensuTable extends Dashing.Widget
 
-   ready: ->
-    # This is fired when the widget is done being rendered
-     console.log('at ready')
-     if not Dashing.widgets[@id][0]['rows']?
-       console.log('failed to display data')
-     else
-       console.log('no problems here...')
-     return
-
+   
    onData: (data) ->
 
      # Identify team from query string
@@ -105,7 +97,30 @@ class Dashing.SensuTable extends Dashing.Widget
      Dashing.widgets['sensu-table'][0]['hrows_tmp'] = ''
      Dashing.widgets['sensu-table'][0]['all_data'] = ''
 
+     console.log('got to bottom of ondata')
+     console.log('document', document)
+     console.log('table', Dashing.widgets['sensu-table'][0])
+     Dashing.widgets[@id].push(@)
+     parent = document.getElementById('table').style.display = 'none'
+     parent = document.getElementById('table').style.display = 'block'
+     tab_content = document.getElementById('table')
+     console.log('tab_content', tab_content)
+     console.log('last', Dashing.lastEvents[@id])
      # need the following line  as CS will return last line in a given scope
      # when rendered to JS which may cause a fork bomb and
      # eventually kill the browser (and perhaps the whole machine)
      return
+
+   ready: ->
+     # This is fired when the widget is done being rendered
+     console.log('at ready')
+     if not Dashing.widgets[@id][0]['rows']?
+       console.log('failed to display data', Dashing.widgets[@id][0])
+       this.onData(Dashing.widgets[@id][0])
+       console.log('finished calling onData')
+     else
+       console.log('no problems here...')
+     console.log('document', document)
+     
+     return
+
